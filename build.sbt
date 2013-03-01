@@ -1,6 +1,6 @@
 name := "jerkson"
 
-version := "0.6.0-SNAPSHOT"
+version := "0.6.0"
 
 scalaVersion := "2.9.1"
 
