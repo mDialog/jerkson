@@ -10,8 +10,7 @@ class MissingPickledSig(clazz: Class[_]) extends Error("Failed to parse pickled 
 
 class MissingExpectedType(clazz: Class[_]) extends Error(
   "Parsed pickled Scala signature, but no expected type found: %s"
-  .format(clazz)
-)
+    .format(clazz))
 
 object CaseClassSigParser {
   val SCALA_SIG = "ScalaSig"
@@ -22,9 +21,8 @@ object CaseClassSigParser {
     // taken from ScalaSigParser parse method with the explicit purpose of walking away from NPE
     val byteCode = ByteCode.forClass(clazz)
     Option(ClassFileParser.parse(byteCode))
-  }
-  catch {
-    case e: NullPointerException => None // yes, this is the exception, but it is totally unhelpful to the end user
+  } catch {
+    case e: NullPointerException ⇒ None // yes, this is the exception, but it is totally unhelpful to the end user
   }
 
   private def parseByteCodeFromAnnotation(clazz: Class[_]): Option[ByteCode] = {
@@ -67,82 +65,88 @@ object CaseClassSigParser {
     val name = simpleName(clazz)
     val pss = parseScalaSig(clazz, classLoader)
     pss match {
-      case Some(x) => {
+      case Some(x) ⇒ {
         val topLevelClasses = x.topLevelClasses
         topLevelClasses.headOption match {
-          case Some(tlc) => {
+          case Some(tlc) ⇒ {
             tlc
           }
-          case None => {
+          case None ⇒ {
             val topLevelObjects = x.topLevelObjects
             topLevelObjects.headOption match {
-              case Some(tlo) => {
-                x.symbols.find { s => !s.isModule && s.name == name } match {
-                  case Some(s) => s.asInstanceOf[ClassSymbol]
-                  case None => throw new MissingExpectedType(clazz)
+              case Some(tlo) ⇒ {
+                x.symbols.find { s ⇒ !s.isModule && s.name == name } match {
+                  case Some(s) ⇒ s.asInstanceOf[ClassSymbol]
+                  case None    ⇒ throw new MissingExpectedType(clazz)
                 }
               }
-              case _ => throw new MissingExpectedType(clazz)
+              case _ ⇒ throw new MissingExpectedType(clazz)
             }
           }
         }
       }
-      case None => throw new MissingPickledSig(clazz)
+      case None ⇒ throw new MissingPickledSig(clazz)
     }
   }
 
-  def parse[A](clazz: Class[A], factory: TypeFactory, classLoader: ClassLoader) = {
-    findSym(clazz, classLoader).children.filter(c => c.isCaseAccessor && !c.isPrivate)
-      .zipWithIndex.map { case (ms,idx) => {
-        ms.asInstanceOf[MethodSymbol].infoType match {
-          case NullaryMethodType(t: TypeRefType) => {
+  def parse[A](javaType: JavaType, factory: TypeFactory, classLoader: ClassLoader) = {
+    val clazz = javaType.getRawClass
+    val containedTypes: Map[String, JavaType] = ((0 until javaType.containedTypeCount).map { i ⇒ javaType.containedTypeName(i) -> javaType.containedType(i) }).toMap
+    findSym(clazz, classLoader).children.filter(c ⇒ c.isCaseAccessor && !c.isPrivate)
+      .zipWithIndex.map {
+        case (ms, idx) ⇒ {
+          ms.asInstanceOf[MethodSymbol].infoType match {
+            case NullaryMethodType(t: TypeRefType) ⇒ {
 
-            // try and find the field's default
-            val companionClass = clazz.companionClass(classLoader)
-            val companionObject = clazz.companionObject(classLoader)
-            val defaultMethod = try {
-              Some(companionClass.getMethod("apply$default$%d".format(idx + 1)))
-            }
-            catch {
-              case _ => None // indicates no default value was supplied
-            }
-            val defaultValue = defaultMethod.map(m => Some(m.invoke(companionObject))).getOrElse(None)
+              // try and find the field's default
+              val companionClass = clazz.companionClass(classLoader)
+              val companionObject = clazz.companionObject(classLoader)
+              val defaultMethod = try {
+                Some(companionClass.getMethod("apply$default$%d".format(idx + 1)))
+              } catch {
+                case _ ⇒ None // indicates no default value was supplied
+              }
+              val defaultValue = defaultMethod.map(m ⇒ Some(m.invoke(companionObject))).getOrElse(None)
 
-            Tuple3(ms.name, typeRef2JavaType(t, factory, classLoader), defaultValue) :: Nil
+              Tuple3(ms.name, typeRef2JavaType(t, factory, classLoader, containedTypes), defaultValue) :: Nil
+            }
+            case _ ⇒ Nil
           }
-          case _ => Nil
         }
-      }}.flatten
+      }.flatten
   }
 
-  protected def typeRef2JavaType(ref: TypeRefType, factory: TypeFactory, classLoader: ClassLoader): JavaType = {
+  protected def typeRef2JavaType(ref: TypeRefType, factory: TypeFactory, classLoader: ClassLoader, containedTypes: Map[String, JavaType]): JavaType = {
     try {
       if (ref.symbol.path == "scala.Array") {
-        val elementType = typeRef2JavaType(ref.typeArgs.head.asInstanceOf[TypeRefType], factory, classLoader)
+        val elementType = typeRef2JavaType(ref.typeArgs.head.asInstanceOf[TypeRefType], factory, classLoader, containedTypes)
         val realElementType = elementType.getRawClass.getName match {
-          case "java.lang.Boolean" => classOf[Boolean]
-          case "java.lang.Byte" => classOf[Byte]
-          case "java.lang.Character" => classOf[Char]
-          case "java.lang.Double" => classOf[Double]
-          case "java.lang.Float" => classOf[Float]
-          case "java.lang.Integer" => classOf[Int]
-          case "java.lang.Long" => classOf[Long]
-          case "java.lang.Short" => classOf[Short]
-          case _ => elementType.getRawClass
+          case "java.lang.Boolean"   ⇒ classOf[Boolean]
+          case "java.lang.Byte"      ⇒ classOf[Byte]
+          case "java.lang.Character" ⇒ classOf[Char]
+          case "java.lang.Double"    ⇒ classOf[Double]
+          case "java.lang.Float"     ⇒ classOf[Float]
+          case "java.lang.Integer"   ⇒ classOf[Int]
+          case "java.lang.Long"      ⇒ classOf[Long]
+          case "java.lang.Short"     ⇒ classOf[Short]
+          case _                     ⇒ elementType.getRawClass
         }
 
         val array = java.lang.reflect.Array.newInstance(realElementType, 0)
         factory.constructType(array.getClass)
       } else {
-        val klass = loadClass(ref.symbol.path, classLoader)
-        factory.constructParametricType(
-          klass, ref.typeArgs.map {
-            t => typeRef2JavaType(t.asInstanceOf[TypeRefType], factory, classLoader)
-          }: _*
-        )
+        if (containedTypes.contains(ref.symbol.path)) {
+          containedTypes(ref.symbol.path)
+        } else {
+          val klass = loadClass(ref.symbol.path, classLoader)
+          factory.constructParametricType(
+            klass, ref.typeArgs.map {
+              t ⇒ typeRef2JavaType(t.asInstanceOf[TypeRefType], factory, classLoader, containedTypes)
+            }: _*)
+        }
       }
     } catch {
-      case e: Throwable => {
+      case e: Throwable ⇒ {
         e.printStackTrace()
         null
       }
@@ -150,32 +154,32 @@ object CaseClassSigParser {
   }
 
   protected def loadClass(path: String, classLoader: ClassLoader) = path match {
-    case "scala.Predef.Map" => classOf[Map[_, _]]
-    case "scala.Predef.Set" => classOf[Set[_]]
-    case "scala.Predef.String" => classOf[String]
-    case "scala.package.List" => classOf[List[_]]
-    case "scala.package.Seq" => classOf[Seq[_]]
-    case "scala.package.Sequence" => classOf[Seq[_]]
-    case "scala.package.Collection" => classOf[Seq[_]]
-    case "scala.package.IndexedSeq" => classOf[IndexedSeq[_]]
-    case "scala.package.RandomAccessSeq" => classOf[IndexedSeq[_]]
-    case "scala.package.Iterable" => classOf[Iterable[_]]
-    case "scala.package.Iterator" => classOf[Iterator[_]]
-    case "scala.package.Vector" => classOf[Vector[_]]
-    case "scala.package.BigDecimal" => classOf[BigDecimal]
-    case "scala.package.BigInt" => classOf[BigInt]
-    case "scala.package.Integer" => classOf[java.lang.Integer]
-    case "scala.package.Character" => classOf[java.lang.Character]
-    case "scala.Long" => classOf[java.lang.Long]
-    case "scala.Int" => classOf[java.lang.Integer]
-    case "scala.Boolean" => classOf[java.lang.Boolean]
-    case "scala.Short" => classOf[java.lang.Short]
-    case "scala.Byte" => classOf[java.lang.Byte]
-    case "scala.Float" => classOf[java.lang.Float]
-    case "scala.Double" => classOf[java.lang.Double]
-    case "scala.Char" => classOf[java.lang.Character]
-    case "scala.Any" => classOf[Any]
-    case "scala.AnyRef" => classOf[AnyRef]
-    case name => classLoader.loadClass(name)
+    case "scala.Predef.Map"              ⇒ classOf[Map[_, _]]
+    case "scala.Predef.Set"              ⇒ classOf[Set[_]]
+    case "scala.Predef.String"           ⇒ classOf[String]
+    case "scala.package.List"            ⇒ classOf[List[_]]
+    case "scala.package.Seq"             ⇒ classOf[Seq[_]]
+    case "scala.package.Sequence"        ⇒ classOf[Seq[_]]
+    case "scala.package.Collection"      ⇒ classOf[Seq[_]]
+    case "scala.package.IndexedSeq"      ⇒ classOf[IndexedSeq[_]]
+    case "scala.package.RandomAccessSeq" ⇒ classOf[IndexedSeq[_]]
+    case "scala.package.Iterable"        ⇒ classOf[Iterable[_]]
+    case "scala.package.Iterator"        ⇒ classOf[Iterator[_]]
+    case "scala.package.Vector"          ⇒ classOf[Vector[_]]
+    case "scala.package.BigDecimal"      ⇒ classOf[BigDecimal]
+    case "scala.package.BigInt"          ⇒ classOf[BigInt]
+    case "scala.package.Integer"         ⇒ classOf[java.lang.Integer]
+    case "scala.package.Character"       ⇒ classOf[java.lang.Character]
+    case "scala.Long"                    ⇒ classOf[java.lang.Long]
+    case "scala.Int"                     ⇒ classOf[java.lang.Integer]
+    case "scala.Boolean"                 ⇒ classOf[java.lang.Boolean]
+    case "scala.Short"                   ⇒ classOf[java.lang.Short]
+    case "scala.Byte"                    ⇒ classOf[java.lang.Byte]
+    case "scala.Float"                   ⇒ classOf[java.lang.Float]
+    case "scala.Double"                  ⇒ classOf[java.lang.Double]
+    case "scala.Char"                    ⇒ classOf[java.lang.Character]
+    case "scala.Any"                     ⇒ classOf[Any]
+    case "scala.AnyRef"                  ⇒ classOf[AnyRef]
+    case name                            ⇒ classLoader.loadClass(name)
   }
 }
