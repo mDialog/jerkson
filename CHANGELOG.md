@@ -1,3 +1,9 @@
+v0.7.0: Mar 18 2013
+===================
+* Removed all dependency on maven
+* Changed testing framework to scalatest
+* Upgrade to scala 2.10
+
 v0.5.0: Oct 07 2011
 ===================
 

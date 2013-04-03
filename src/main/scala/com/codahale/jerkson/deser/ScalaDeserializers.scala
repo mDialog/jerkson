@@ -6,10 +6,13 @@ import com.codahale.jerkson.AST.{JNull, JValue}
 import scala.collection.generic.{MapFactory, GenericCompanion}
 import com.fasterxml.jackson.databind.deser.Deserializers
 import com.fasterxml.jackson.databind.Module.SetupContext
+import com.fasterxml.jackson.databind.{JavaType, DeserializationConfig, BeanDescription, JsonDeserializer}
 
 class ScalaDeserializers(classLoader: ClassLoader, context: SetupContext) extends Deserializers.Base {
+
   override def findBeanDeserializer(javaType: JavaType, config: DeserializationConfig,
-                            beanDesc: BeanDescription) = {
+                            beanDesc: BeanDescription): JsonDeserializer[_] = {
+
     val klass = javaType.getRawClass
     if (klass == classOf[Range] || klass == classOf[immutable.Range]) {
       new RangeDeserializer

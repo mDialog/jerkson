@@ -23,11 +23,11 @@ class CaseClassSerializer[A <: Product](klass: Class[_]) extends JsonSerializer[
   private val methods = klass.getDeclaredMethods
                                 .filter { _.getParameterTypes.isEmpty }
                                 .map { m => m.getName -> m }.toMap
-                                
+
   private val jsonGetters = methods
-							  	.filter { _._2.getAnnotation(classOf[JsonProperty]) != null }
-							    .map { m => m._2.getAnnotation(classOf[JsonProperty]).value -> m._2 }.toMap                           
-  
+                    .filter { _._2.getAnnotation(classOf[JsonProperty]) != null }
+                    .map { m => m._2.getAnnotation(classOf[JsonProperty]).value -> m._2 }.toMap
+
   def serialize(value: A, json: JsonGenerator, provider: SerializerProvider) {
     json.writeStartObject()
     for (field <- nonIgnoredFields) {
