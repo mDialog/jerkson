@@ -1,4 +1,4 @@
-v0.7.0: Mar 18 2013
+v1.0.0: Mar 18 2013
 ===================
 * Removed all dependency on maven
 * Changed testing framework to scalatest
