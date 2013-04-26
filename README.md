@@ -10,8 +10,8 @@ brings Scala's ease-of-use to Jackson's features.
 Requirements
 ------------
 
-* Scala 2.10
-* Jackson 2.1.x
+* Scala 2.10.x
+* Jackson 2.2.x
 
 Recent Changes
 --------------

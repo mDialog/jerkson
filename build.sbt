@@ -2,18 +2,17 @@ name := "jerkson"
 
 version := "0.7-SNAPSHOT"
 
-scalaVersion := "2.10.0"
+scalaVersion := "2.10.1"
 
 scalacOptions := Seq("-unchecked", "-deprecation")
 
 libraryDependencies ++= Seq(
-	"com.fasterxml.jackson.core" % "jackson-core" % "2.1.3",
-	"com.fasterxml.jackson.core" % "jackson-databind" % "2.1.3",
+	"com.fasterxml.jackson.core" % "jackson-core" % "2.2.0",
+	"com.fasterxml.jackson.core" % "jackson-databind" % "2.2.0",
 	"org.mockito" % "mockito-all" % "1.9.0",
 	"junit" % "junit" % "4.10",
 	"org.hamcrest" % "hamcrest-core" % "1.3",
-	"org.scalatest" %% "scalatest" % "1.9.1" % "test",
-	"org.scala-lang" % "scala-reflect" % "2.10.0"
+	"org.scalatest" %% "scalatest" % "1.9.1" % "test"
 )
 
 resolvers ++= Seq(
