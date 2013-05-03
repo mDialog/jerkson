@@ -107,7 +107,7 @@ class CaseClassSupportSpec extends FlatSpec with ShouldMatchers {
     generate(CaseClassWithJsonNode(new IntNode(2))) should equal( """{"value":2}""")
   }
 
-  "A case class with members of all ScalaSig types" should "be pasrable from a JSON object with those fields" in {
+  "A case class with members of all ScalaSig types" should "be parsable from a JSON object with those fields" in {
     val json = """
                  {
                    "map": {
@@ -135,39 +135,131 @@ class CaseClassSupportSpec extends FlatSpec with ShouldMatchers {
                    "any": true,
                    "anyRef": "wah",
                    "intMap": {
-                     "1": "1"
+                     "1": "10"
                    },
                    "longMap": {
-                     "2": 2
+                     "2": 20
                    }
                  }
                """
 
-    parse[CaseClassWithAllTypes](json) should equal(
-      CaseClassWithAllTypes(
-        map = Map("one" -> "two"),
-        set = Set(1, 2, 3),
-        string = "woo",
-        list = List(4, 5, 6),
-        seq = Seq(7, 8, 9),
-        indexedSeq = IndexedSeq(16, 17, 18),
-        vector = Vector(22, 23, 24),
-        bigDecimal = BigDecimal("12.0"),
-        bigInt = BigInt("13"),
-        int = 1,
-        long = 2L,
-        char = 'x',
-        bool = false,
-        short = 14,
-        byte = 15,
-        float = 34.5f,
-        double = 44.9d,
-        any = true,
-        anyRef = "wah",
-        intMap = Map(1 -> 1),
-        longMap = Map(2L -> 2L)
-      )
+    val expected = CaseClassWithAllTypes(
+      map = Map("one" -> "two"),
+      set = Set(1, 2, 3),
+      string = "woo",
+      list = List(4, 5, 6),
+      seq = Seq(7, 8, 9),
+      indexedSeq = IndexedSeq(16, 17, 18),
+      vector = Vector(22, 23, 24),
+      bigDecimal = BigDecimal("12.0"),
+      bigInt = BigInt("13"),
+      int = 1,
+      long = 2L,
+      char = 'x',
+      bool = false,
+      short = 14,
+      byte = 15,
+      float = 34.5f,
+      double = 44.9d,
+      any = true,
+      anyRef = "wah",
+      intMap = Map(1 -> 10),
+      longMap = Map(2L -> 20L)
     )
+    val actual = parse[CaseClassWithAllTypes](json)
+    actual should equal(expected)
+    parse[CaseClassWithAllTypes](generate(actual)) should equal(expected)
+  }
+
+
+  "A case class with supplied optional members of Scala collection types" should "be parsable from a JSON object with those fields" in {
+    val json = """
+                 {
+                   "map": {
+                     "one": "two"
+                   },
+                   "set": [1, 2, 3],
+                   "list": [4, 5, 6],
+                   "seq": [7, 8, 9],
+                   "indexedSeq": [16, 17, 18],
+                   "vector": [22, 23, 24],
+                   "intMap": {
+                     "1": 10
+                   },
+                   "longMap": {
+                     "2": 20
+                   }
+                 }
+               """
+
+    val expected = CaseClassWithOptionalCollectionTypes(
+      map = Some(Map("one" -> "two")),
+      set = Some(Set(1, 2, 3)),
+      list = Some(List(4, 5, 6)),
+      seq = Some(Seq(7, 8, 9)),
+      indexedSeq = Some(IndexedSeq(16, 17, 18)),
+      vector = Some(Vector(22, 23, 24)),
+      intMap = Some(Map(1 -> 10)),
+      longMap = Some(Map(2L -> 20L))
+    )
+    val actual = parse[CaseClassWithOptionalCollectionTypes](json)
+    actual should equal(expected)
+    val generatedJson = generate(actual).replaceAll("[\n\t ]", "")
+    generatedJson should equal(json.replaceAll("[\n\t ]", ""))
+    parse[CaseClassWithOptionalCollectionTypes](generatedJson) should equal(expected)
+  }
+
+
+  "A case class with optional members of empty Scala collection types" should "be parsable from a JSON object with those fields" in {
+    val json = """
+                 {
+                   "map": {},
+                   "set": [],
+                   "list": [],
+                   "seq": [],
+                   "collection": [],
+                   "indexedSeq": [],
+                   "randomAccessSeq": [],
+                   "vector": [],
+                   "intMap": {},
+                   "longMap": {}
+                 }
+               """
+
+    val expected = CaseClassWithOptionalCollectionTypes(
+      map = Some(Map.empty),
+      set = Some(Set.empty),
+      list = Some(List.empty),
+      seq = Some(Seq.empty),
+      indexedSeq = Some(IndexedSeq.empty),
+      vector = Some(Vector.empty),
+      intMap = Some(Map.empty),
+      longMap = Some(Map.empty)
+    )
+    val actual = parse[CaseClassWithOptionalCollectionTypes](json)
+    actual should equal(expected)
+    parse[CaseClassWithOptionalCollectionTypes](generate(actual)) should equal(expected)
+  }
+
+
+  "A case class with absent optional members of Scala collection types" should "be parsable from a JSON object with those fields" in {
+    val json = """
+                 {}
+               """
+
+    val expected = CaseClassWithOptionalCollectionTypes(
+      map = None,
+      set = None,
+      list = None,
+      seq = None,
+      indexedSeq = None,
+      vector = None,
+      intMap = None,
+      longMap = None
+    )
+    val actual = parse[CaseClassWithOptionalCollectionTypes](json)
+    actual should equal(expected)
+    parse[CaseClassWithOptionalCollectionTypes](generate(actual)) should equal(expected)
   }
 
 

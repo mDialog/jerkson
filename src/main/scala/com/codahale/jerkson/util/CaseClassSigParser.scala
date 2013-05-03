@@ -108,7 +108,7 @@ object CaseClassSigParser {
             val defaultMethod = try {
               Some(companionClass.getMethod("apply$default$%d".format(idx + 1)))
             } catch {
-              case _ ⇒ None // indicates no default value was supplied
+              case _: Exception ⇒ None // indicates no default value was supplied
             }
             val defaultValue = defaultMethod.map(m ⇒ Some(m.invoke(companionObject))).getOrElse(None)
             Tuple3(ms.name, typeRef2JavaType(t, factory, classLoader, containedTypes), defaultValue) :: Nil

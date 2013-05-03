@@ -1,8 +1,10 @@
 .idea*
+*.iws
+*.ipr
 *.iml
 target
-
 .classpath
 .project
 .settings
 .cache
+/out/
