@@ -1,15 +1,17 @@
 package com.codahale.jerkson.deser
 
+import language.higherKinds
+
 import com.fasterxml.jackson.databind.JavaType
-import com.fasterxml.jackson.databind.{DeserializationContext, JsonDeserializer}
-import com.fasterxml.jackson.core.{JsonToken, JsonParser}
+import com.fasterxml.jackson.databind.{ DeserializationContext, JsonDeserializer }
+import com.fasterxml.jackson.core.{ JsonToken, JsonParser }
 import collection.generic.MapFactory
 import collection.MapLike
 import com.fasterxml.jackson.databind.deser.ResolvableDeserializer
 
 class ImmutableMapDeserializer[CC[A, B] <: Map[A, B] with MapLike[A, B, CC[A, B]]](companion: MapFactory[CC],
-                                                                          valueType: JavaType)
-  extends JsonDeserializer[Object] with ResolvableDeserializer {
+  valueType: JavaType)
+    extends JsonDeserializer[Object] with ResolvableDeserializer {
 
   var valueDeserializer: JsonDeserializer[Object] = _
 
@@ -21,7 +23,7 @@ class ImmutableMapDeserializer[CC[A, B] <: Map[A, B] with MapLike[A, B, CC[A, B]
     }
 
     if (jp.getCurrentToken != JsonToken.FIELD_NAME &&
-        jp.getCurrentToken != JsonToken.END_OBJECT) {
+      jp.getCurrentToken != JsonToken.END_OBJECT) {
       throw ctxt.mappingException(valueType.getRawClass)
     }
 

@@ -1,6 +1,5 @@
 package com.codahale.jerkson.util
 
-
 object ByteCodecs {
 
   def avoidZero(src: Array[Byte]): Array[Byte] = {

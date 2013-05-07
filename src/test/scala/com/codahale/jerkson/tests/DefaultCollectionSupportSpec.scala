@@ -8,35 +8,34 @@ import org.scalatest.matchers.ShouldMatchers
 class DefaultCollectionSupportSpec extends FlatSpec with ShouldMatchers {
   //class "A Range" {
   "A Range" should "generate a JSON object" in {
-    generate(Range.inclusive(1, 4, 3)) should equal( """{"start":1,"end":4,"step":3,"inclusive":true}""")
+    generate(Range.inclusive(1, 4, 3)) should equal("""{"start":1,"end":4,"step":3,"inclusive":true}""")
   }
 
   it should "generate a JSON object without the inclusive field if it's exclusive" in {
-    generate(Range(1, 4, 3)) should equal( """{"start":1,"end":4,"step":3}""")
+    generate(Range(1, 4, 3)) should equal("""{"start":1,"end":4,"step":3}""")
   }
 
   it should "generate a JSON object without the step field if it's 1" in {
-    generate(Range(1, 4)) should equal( """{"start":1,"end":4}""")
+    generate(Range(1, 4)) should equal("""{"start":1,"end":4}""")
   }
 
   it should "be parsable from a JSON object" in {
-    parse[Range]( """{"start":1,"end":4,"step":3,"inclusive":true}""") should equal(Range.inclusive(1, 4, 3))
+    parse[Range]("""{"start":1,"end":4,"step":3,"inclusive":true}""") should equal(Range.inclusive(1, 4, 3))
   }
 
   it should "be parsable from a JSON object without the inclusive field" in {
-    parse[Range]( """{"start":1,"end":4,"step":3}""") should equal(Range(1, 4, 3))
+    parse[Range]("""{"start":1,"end":4,"step":3}""") should equal(Range(1, 4, 3))
   }
 
   it should "be parsable from a JSON object without the step field" in {
-    parse[Range]( """{"start":1,"end":4}""") should equal(Range(1, 4))
+    parse[Range]("""{"start":1,"end":4}""") should equal(Range(1, 4))
   }
 
   it should "be not parsable from a JSON object without the required fields" in {
     intercept[ParsingException] {
-      parse[Range]( """{"start":1}""")
+      parse[Range]("""{"start":1}""")
     }
   }
-
 
   //"A Pair[Int]"
   ignore should "(pair) generate a two-element JSON array of ints" in {
@@ -72,7 +71,6 @@ class DefaultCollectionSupportSpec extends FlatSpec with ShouldMatchers {
     parse[(Int, String, Int, String)]("[1,\"2\",3,\"4\"]") should equal((1, "2", 3, "4"))
   }
 
-
   // TODO: 6/1/11 <coda> -- add support for all Tuple1->TupleBillionty types
 
   "A Seq[Int]" should "generates a JSON array of ints" in {
@@ -87,7 +85,6 @@ class DefaultCollectionSupportSpec extends FlatSpec with ShouldMatchers {
     parse[Seq[Int]]("[]") should equal(Seq.empty[Int])
   }
 
-
   "A List[Int]" should "generates a JSON array of ints" in {
     generate(List(1, 2, 3)) should equal("[1,2,3]")
   }
@@ -99,7 +96,6 @@ class DefaultCollectionSupportSpec extends FlatSpec with ShouldMatchers {
   it should "is parsable from an empty JSON array" in {
     parse[List[Int]]("[]") should equal(List.empty[Int])
   }
-
 
   "An IndexedSeq[Int]" should "generate a JSON array of ints" in {
     generate(IndexedSeq(1, 2, 3)) should equal("[1,2,3]")
@@ -113,7 +109,6 @@ class DefaultCollectionSupportSpec extends FlatSpec with ShouldMatchers {
     parse[IndexedSeq[Int]]("[]") should equal(IndexedSeq.empty[Int])
   }
 
-
   "A Vector[Int]" should "generate a JSON array of ints" in {
     generate(Vector(1, 2, 3)) should equal("[1,2,3]")
   }
@@ -125,7 +120,6 @@ class DefaultCollectionSupportSpec extends FlatSpec with ShouldMatchers {
   it should "be parsable from an empty JSON array" in {
     parse[Vector[Int]]("[]") should equal(Vector.empty[Int])
   }
-
 
   "A Set[Int]" should "generates a JSON array of ints" in {
     generate(Set(1, 2, 3)) should equal("[1,2,3]")
@@ -139,32 +133,29 @@ class DefaultCollectionSupportSpec extends FlatSpec with ShouldMatchers {
     parse[Set[Int]]("[]") should equal(Set.empty[Int])
   }
 
-
   "A Map[String, Int]" should "generate a JSON object with int field values" in {
-    generate(Map("one" -> 1, "two" -> 2)) should equal( """{"one":1,"two":2}""")
+    generate(Map("one" -> 1, "two" -> 2)) should equal("""{"one":1,"two":2}""")
   }
 
   it should "be parsable from a JSON object with int field values" in {
-    parse[Map[String, Int]]( """{"one":1,"two":2}""") should equal(Map("one" -> 1, "two" -> 2))
+    parse[Map[String, Int]]("""{"one":1,"two":2}""") should equal(Map("one" -> 1, "two" -> 2))
   }
 
   it should "be parsable from an empty JSON object" in {
     parse[Map[String, Int]]("{}") should equal(Map.empty[String, Int])
   }
 
-
   "A Map[String, Any]" should "generate a JSON object with mixed field values" in {
-    generate(Map("one" -> 1, "two" -> "2")) should equal( """{"one":1,"two":"2"}""")
+    generate(Map("one" -> 1, "two" -> "2")) should equal("""{"one":1,"two":"2"}""")
   }
 
   it should "be parsable from a JSON object with mixed field values" in {
-    parse[Map[String, Any]]( """{"one":1,"two":"2"}""") should equal(Map[String, Any]("one" -> 1, "two" -> "2"))
+    parse[Map[String, Any]]("""{"one":1,"two":"2"}""") should equal(Map[String, Any]("one" -> 1, "two" -> "2"))
   }
 
   it should "be parsable from an empty JSON object" in {
     parse[Map[String, Any]]("{}") should equal(Map.empty[String, Any])
   }
-
 
   "A Stream[Int]" should "generate a JSON array" in {
     generate(Stream(1, 2, 3)) should equal("[1,2,3]")
@@ -178,7 +169,6 @@ class DefaultCollectionSupportSpec extends FlatSpec with ShouldMatchers {
     parse[Stream[Int]]("[]") should equal(Stream.empty[Int])
   }
 
-
   "An Iterator[Int]" should "generate a JSON array of ints" in {
     generate(Seq(1, 2, 3).iterator) should equal("[1,2,3]")
   }
@@ -190,7 +180,6 @@ class DefaultCollectionSupportSpec extends FlatSpec with ShouldMatchers {
   it should "be parsable from an empty JSON array" in {
     parse[Iterator[Int]]("[]").toList should equal(List.empty[Int])
   }
-
 
   "A Traversable[Int]" should "generate a JSON array of ints" in {
     generate(Seq(1, 2, 3).toTraversable) should equal("[1,2,3]")
@@ -204,7 +193,6 @@ class DefaultCollectionSupportSpec extends FlatSpec with ShouldMatchers {
     parse[Traversable[Int]]("[]").toList should equal(List.empty[Int])
   }
 
-
   "A BufferedIterator[Int]" should "generate a JSON array of ints" in {
     generate(Seq(1, 2, 3).iterator.buffered) should equal("[1,2,3]")
   }
@@ -216,7 +204,6 @@ class DefaultCollectionSupportSpec extends FlatSpec with ShouldMatchers {
   it should "be parsable from an empty JSON array" in {
     parse[BufferedIterator[Int]]("[]").toList should equal(List.empty[Int])
   }
-
 
   "An Iterable[Int]" should "generate a JSON array of ints" in {
     generate(Seq(1, 2, 3).toIterable) should equal("[1,2,3]")

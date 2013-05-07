@@ -24,59 +24,59 @@ class ASTTypeSupportSpec extends FlatSpec with ShouldMatchers {
   }
 
   it should "be parsable from a JSON float" in {
-    parse[JFloat]("15.1") should equal (JFloat(15.1))
+    parse[JFloat]("15.1") should equal(JFloat(15.1))
   }
 
   it should "be parsable from a JSON float as a JValue" in {
-    parse[JValue]("15.1") should equal (JFloat(15.1))
+    parse[JValue]("15.1") should equal(JFloat(15.1))
   }
 
   "An AST.JString" should "generate a JSON string" in {
-    generate(JString("foo")) should equal ("\"foo\"")
+    generate(JString("foo")) should equal("\"foo\"")
   }
 
   it should "be parsable from a JSON int" in {
-    parse[JString]("\"foo\"") should equal (JString("foo"))
+    parse[JString]("\"foo\"") should equal(JString("foo"))
   }
 
   it should "be parsable from a JSON int as a JValue" in {
-    parse[JValue]("\"foo\"") should equal (JString("foo"))
+    parse[JValue]("\"foo\"") should equal(JString("foo"))
   }
 
   "An AST.JNull" should "generate a JSON null" in {
-    generate(JNull) should equal ("null")
+    generate(JNull) should equal("null")
   }
 
   it should "be parsable from a JSON null" in {
-    parse[JNull.type]("null") should equal (JNull)
+    parse[JNull.type]("null") should equal(JNull)
   }
 
   it should "be parsable from a JSON null as a JValue" in {
-    parse[JValue]("null") should equal (JNull)
+    parse[JValue]("null") should equal(JNull)
   }
 
   "An AST.JBoolean" should "generate a JSON true" in {
-    generate(JBoolean(true)) should equal ("true")
+    generate(JBoolean(true)) should equal("true")
   }
 
   it should "generate a JSON false" in {
-    generate(JBoolean(false)) should equal ("false")
+    generate(JBoolean(false)) should equal("false")
   }
 
   it should "be parsable from a JSON true" in {
-    parse[JBoolean]("true") should equal (JBoolean(true))
+    parse[JBoolean]("true") should equal(JBoolean(true))
   }
 
   it should "be parsable from a JSON false" in {
-    parse[JBoolean]("false") should equal (JBoolean(false))
+    parse[JBoolean]("false") should equal(JBoolean(false))
   }
 
   it should "be parsable from a JSON true as a JValue" in {
-    parse[JValue]("true") should equal (JBoolean(true))
+    parse[JValue]("true") should equal(JBoolean(true))
   }
 
   it should "be parsable from a JSON false as a JValue" in {
-    parse[JValue]("false") should equal (JBoolean(false))
+    parse[JValue]("false") should equal(JBoolean(false))
   }
 
   "An AST.JArray" should "generates a JSON array of ints" in {

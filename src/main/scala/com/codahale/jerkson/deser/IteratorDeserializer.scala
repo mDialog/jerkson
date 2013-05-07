@@ -1,8 +1,8 @@
 package com.codahale.jerkson.deser
 
 import com.fasterxml.jackson.databind.JavaType
-import com.fasterxml.jackson.databind.{DeserializationContext, JsonDeserializer}
-import com.fasterxml.jackson.core.{JsonToken, JsonParser}
+import com.fasterxml.jackson.databind.{ DeserializationContext, JsonDeserializer }
+import com.fasterxml.jackson.core.{ JsonToken, JsonParser }
 import com.fasterxml.jackson.databind.deser.ResolvableDeserializer
 
 class IteratorDeserializer(elementType: JavaType) extends JsonDeserializer[Object] with ResolvableDeserializer {

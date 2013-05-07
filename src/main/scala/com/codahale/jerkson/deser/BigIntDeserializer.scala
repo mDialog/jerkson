@@ -1,6 +1,6 @@
 package com.codahale.jerkson.deser
 
-import com.fasterxml.jackson.databind.{DeserializationContext, JsonDeserializer}
+import com.fasterxml.jackson.databind.{ DeserializationContext, JsonDeserializer }
 import com.fasterxml.jackson.core.JsonParser
 
 class BigIntDeserializer extends JsonDeserializer[Object] {
@@ -12,7 +12,7 @@ class BigIntDeserializer extends JsonDeserializer[Object] {
     try {
       BigInt(jp.getText)
     } catch {
-      case e: NumberFormatException =>
+      case e: NumberFormatException ⇒
         throw ctxt.mappingException(classOf[BigInt])
     }
   }

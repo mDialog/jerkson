@@ -1,9 +1,9 @@
 package com.codahale.jerkson.deser
 
 import com.fasterxml.jackson.databind.JavaType
-import com.fasterxml.jackson.databind.{DeserializationContext, JsonDeserializer}
+import com.fasterxml.jackson.databind.{ DeserializationContext, JsonDeserializer }
 import scala.collection.mutable
-import com.fasterxml.jackson.core.{JsonToken, JsonParser}
+import com.fasterxml.jackson.core.{ JsonToken, JsonParser }
 import com.fasterxml.jackson.databind.deser.ResolvableDeserializer
 
 class MutableLinkedHashMapDeserializer(valueType: JavaType) extends JsonDeserializer[Object] with ResolvableDeserializer {

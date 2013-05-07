@@ -1,6 +1,5 @@
 package com.codahale.jerkson.tests
 
-
 import com.codahale.jerkson.Json._
 import com.codahale.jerkson.AST._
 import org.scalatest.matchers.ShouldMatchers
@@ -27,11 +26,10 @@ class MutableCollectionSupportSpec extends FlatSpec with ShouldMatchers {
     generate(ArraySeq(1, 2, 3)) should equal("[1,2,3]")
   }
 
-
   //Note should matchers don't implicitly convert ArraySeq[Int] in scala 2.10 for unknown reason
   it should "be parsable from a JSON array of ints" in {
     //parse[ArraySeq[Int]]("[1,2,3]") should equal(ArraySeq(1, 2, 3))
-    assert(parse[ArraySeq[Int]]("[1,2,3]").equals(ArraySeq(1,2,3)))
+    assert(parse[ArraySeq[Int]]("[1,2,3]").equals(ArraySeq(1, 2, 3)))
   }
 
   it should "be parsable from an empty JSON array" in {
@@ -56,11 +54,11 @@ class MutableCollectionSupportSpec extends FlatSpec with ShouldMatchers {
   }
 
   "A mutable.Queue[Int]" should "generate a JSON array of ints" in {
-    generate(Queue(1,2,3)) should equal("[1,2,3]")
+    generate(Queue(1, 2, 3)) should equal("[1,2,3]")
   }
 
   it should "be parsable from a JSON array of ints" in {
-    parse[Queue[Int]]("[1,2,3]") should equal(Queue(1,2,3))
+    parse[Queue[Int]]("[1,2,3]") should equal(Queue(1, 2, 3))
   }
 
   it should "be parsable from an empty JSON array" in {
@@ -68,11 +66,11 @@ class MutableCollectionSupportSpec extends FlatSpec with ShouldMatchers {
   }
 
   "A mutable.ListBuffer[Int]" should "generate a JSON array of ints" in {
-    generate(ListBuffer(1,2,3)) should equal("[1,2,3]")
+    generate(ListBuffer(1, 2, 3)) should equal("[1,2,3]")
   }
 
   it should "be parsable from a JSON array of ints" in {
-    parse[ListBuffer[Int]]("[1,2,3]") should equal(Queue(1,2,3))
+    parse[ListBuffer[Int]]("[1,2,3]") should equal(Queue(1, 2, 3))
   }
 
   it should "be parsable from an empty JSON array" in {
@@ -80,11 +78,11 @@ class MutableCollectionSupportSpec extends FlatSpec with ShouldMatchers {
   }
 
   "A mutable.ArrayBuffer[Int]" should "generate a JSON array of ints" in {
-    generate(ArrayBuffer(1,2,3)) should equal("[1,2,3]")
+    generate(ArrayBuffer(1, 2, 3)) should equal("[1,2,3]")
   }
 
   it should "be parsable from a JSON array of ints" in {
-    parse[ArrayBuffer[Int]]("[1,2,3]") should equal(ArrayBuffer(1,2,3))
+    parse[ArrayBuffer[Int]]("[1,2,3]") should equal(ArrayBuffer(1, 2, 3))
   }
 
   it should "be parsable from an empty JSON array" in {
@@ -92,11 +90,11 @@ class MutableCollectionSupportSpec extends FlatSpec with ShouldMatchers {
   }
 
   "A mutable.BitSet[Int]" should "generate a JSON array of ints" in {
-    generate(BitSet(1,2,3)) should equal("[1,2,3]")
+    generate(BitSet(1, 2, 3)) should equal("[1,2,3]")
   }
 
   it should "be parsable from a JSON array of ints" in {
-    parse[BitSet]("[1,2,3]") should equal(BitSet(1,2,3))
+    parse[BitSet]("[1,2,3]") should equal(BitSet(1, 2, 3))
   }
 
   it should "be parsable from an empty JSON array" in {
@@ -108,7 +106,7 @@ class MutableCollectionSupportSpec extends FlatSpec with ShouldMatchers {
   }
 
   it should "be parsable from a JSON array of ints" in {
-    parse[HashSet[Int]]("[1,2,3]") should equal(HashSet(1,2,3))
+    parse[HashSet[Int]]("[1,2,3]") should equal(HashSet(1, 2, 3))
   }
 
   it should "be parsable from an empty JSON array" in {
@@ -120,7 +118,7 @@ class MutableCollectionSupportSpec extends FlatSpec with ShouldMatchers {
   }
 
   it should "be parsable from a JSON array of ints" in {
-    parse[LinkedHashSet[Int]]("[1,2,3]") should equal(LinkedHashSet(1,2,3))
+    parse[LinkedHashSet[Int]]("[1,2,3]") should equal(LinkedHashSet(1, 2, 3))
   }
 
   it should "be parsable from an empty JSON array" in {
@@ -140,7 +138,7 @@ class MutableCollectionSupportSpec extends FlatSpec with ShouldMatchers {
   }
 
   "A mutable.Map[String, Any]" should "not be parsable from an empty JSON object in a JSON array" in {
-    intercept[ParsingException]{
+    intercept[ParsingException] {
       parse[Map[String, Any]]("[{}]")
     }
   }

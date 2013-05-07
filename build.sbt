@@ -4,7 +4,7 @@ version := "0.7-SNAPSHOT"
 
 scalaVersion := "2.10.1"
 
-scalacOptions := Seq("-unchecked", "-deprecation")
+scalacOptions := Seq("-unchecked", "-deprecation", "-feature", "-language:postfixOps", "-language:reflectiveCalls", "-language:implicitConversions")
 
 libraryDependencies ++= Seq(
 	"com.fasterxml.jackson.core" % "jackson-core" % "2.2.0",

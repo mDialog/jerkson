@@ -16,7 +16,6 @@ class FancyTypeSupportSpec extends FlatSpec with ShouldMatchers {
     parse[URI]("\"http://example.com/resource?query=yes\"") should equal(new URI("http://example.com/resource?query=yes"))
   }
 
-
   val uuid = UUID.fromString("a62047e4-bfb5-4d71-aad7-1a6b338eee63")
 
   "A UUID" should "generate a JSON string" in {
