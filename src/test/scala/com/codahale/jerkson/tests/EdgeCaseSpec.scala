@@ -14,17 +14,14 @@ class EdgeCaseSpec extends FlatSpec with ShouldMatchers {
     parse[List[Int]]("[1,2,3,4]") should equal(List(1, 2, 3, 4))
   }
 
-
   "Parsing a JSON array of ints with nulls" should "be readable as a List[Option[Int]]" in {
     parse[List[Option[Int]]]("[1,2,null,4]") should equal(List(Some(1), Some(2), None, Some(4)))
   }
 
-
   "Deserializing maps" should "not cache Map builders" in {
-    parse[Map[String, Int]]( """ {"one":1, "two": 2} """) should equal(Map("one" -> 1, "two" -> 2))
-    parse[Map[String, Int]]( """ {"one":1, "two": 2} """) should equal(Map("one" -> 1, "two" -> 2))
+    parse[Map[String, Int]](""" {"one":1, "two": 2} """) should equal(Map("one" -> 1, "two" -> 2))
+    parse[Map[String, Int]](""" {"one":1, "two": 2} """) should equal(Map("one" -> 1, "two" -> 2))
   }
-
 
   "Parsing malformed JSON" should "throw a ParsingException with an informative message" in {
     intercept[ParsingException] {
@@ -36,7 +33,6 @@ class EdgeCaseSpec extends FlatSpec with ShouldMatchers {
     }
   }
 
-
   "Parsing invalid JSON" should "throw a ParsingException with an informative message" in {
     intercept[ParsingException] {
       parse[CaseClass]("900")
@@ -45,7 +41,6 @@ class EdgeCaseSpec extends FlatSpec with ShouldMatchers {
       parse[CaseClass]("{\"woo\": 1}")
     }
   }
-
 
   "Parsing an empty document" should "throw a ParsingException with an informative message" in {
     val input = new ByteArrayInputStream(Array.empty)

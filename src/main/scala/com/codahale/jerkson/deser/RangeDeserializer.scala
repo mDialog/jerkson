@@ -2,9 +2,9 @@ package com.codahale.jerkson.deser
 
 import collection.JavaConversions._
 import com.fasterxml.jackson.databind.JsonNode
-import com.fasterxml.jackson.core.{JsonToken, JsonParser}
-import com.fasterxml.jackson.databind.{JsonMappingException, DeserializationContext, JsonDeserializer}
-import com.fasterxml.jackson.databind.node.{IntNode, BooleanNode, NullNode, ObjectNode}
+import com.fasterxml.jackson.core.{ JsonToken, JsonParser }
+import com.fasterxml.jackson.databind.{ JsonMappingException, DeserializationContext, JsonDeserializer }
+import com.fasterxml.jackson.databind.node.{ IntNode, BooleanNode, NullNode, ObjectNode }
 
 class RangeDeserializer extends JsonDeserializer[Object] {
   def deserialize(jp: JsonParser, ctxt: DeserializationContext) = {
@@ -18,13 +18,13 @@ class RangeDeserializer extends JsonDeserializer[Object] {
     }
 
     val node = jp.readValueAsTree[JsonNode]
-    val inclusiveNode  = node.get("inclusive")
+    val inclusiveNode = node.get("inclusive")
     val stepNode = node.get("step")
     val startNode = node.get("start")
     val endNode = node.get("end")
 
     if (startNode == null || !classOf[IntNode].isAssignableFrom(startNode.getClass) ||
-        endNode == null || !classOf[IntNode].isAssignableFrom(endNode.getClass)) {
+      endNode == null || !classOf[IntNode].isAssignableFrom(endNode.getClass)) {
       throw new JsonMappingException(errorMessage(node))
     }
 
@@ -46,9 +46,9 @@ class RangeDeserializer extends JsonDeserializer[Object] {
 
   private def errorMessage(node: JsonNode) = {
     val existing = node match {
-      case obj: ObjectNode => obj.fieldNames.mkString("[", ", ", "]")
-      case _: NullNode => "[]" // this is what Jackson deserializes the inside of an empty object to
-      case unknown => "a non-object"
+      case obj: ObjectNode ⇒ obj.fieldNames.mkString("[", ", ", "]")
+      case _: NullNode     ⇒ "[]" // this is what Jackson deserializes the inside of an empty object to
+      case unknown         ⇒ "a non-object"
     }
     "Invalid JSON. Needed [start, end, <step>, <inclusive>], but found %s.".format(existing)
   }

@@ -1,7 +1,7 @@
 package com.codahale.jerkson.deser
 
-import com.fasterxml.jackson.databind.{DeserializationContext, JsonDeserializer}
-import com.fasterxml.jackson.core.{JsonToken, JsonParser}
+import com.fasterxml.jackson.databind.{ DeserializationContext, JsonDeserializer }
+import com.fasterxml.jackson.core.{ JsonToken, JsonParser }
 
 class StringBuilderDeserializer extends JsonDeserializer[Object] {
   def deserialize(jp: JsonParser, ctxt: DeserializationContext) = {

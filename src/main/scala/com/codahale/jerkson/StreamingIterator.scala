@@ -1,9 +1,9 @@
 package com.codahale.jerkson
 
-import com.fasterxml.jackson.core.{JsonToken, JsonParser}
+import com.fasterxml.jackson.core.{ JsonToken, JsonParser }
 
 class StreamingIterator[A](parser: JsonParser, mf: Manifest[A])
-        extends Iterator[A] {
+    extends Iterator[A] {
 
   import Json._
 

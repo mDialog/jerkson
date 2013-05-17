@@ -7,8 +7,7 @@ import com.codahale.jerkson.AST.JInt
 import org.scalatest.matchers.ShouldMatchers
 import org.scalatest._
 
-
-class StreamingSpec extends FlatSpec with ShouldMatchers  {
+class StreamingSpec extends FlatSpec with ShouldMatchers {
   val json = """[
       {"id":1, "name": "Coda"},
       {"id":2, "name": "Niki"},
@@ -18,12 +17,11 @@ class StreamingSpec extends FlatSpec with ShouldMatchers  {
 
   "An AST.JInt" should "generate a JSON int" in {
     //generate(JInt(15)) should equal("15")
-    stream[CaseClass](new ByteArrayInputStream(json.getBytes)).toList should equal (
-        CaseClass(1, "Coda") ::
+    stream[CaseClass](new ByteArrayInputStream(json.getBytes)).toList should equal(
+      CaseClass(1, "Coda") ::
         CaseClass(2, "Niki") ::
         CaseClass(3, "Biscuit") ::
         CaseClass(4, "Louie") ::
-        Nil
-        )
+        Nil)
   }
 }

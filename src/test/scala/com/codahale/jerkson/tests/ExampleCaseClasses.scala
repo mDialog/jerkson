@@ -1,7 +1,7 @@
 package com.codahale.jerkson.tests
 
 import com.fasterxml.jackson.databind.JsonNode
-import com.fasterxml.jackson.annotation.{JsonIgnoreProperties, JsonIgnore}
+import com.fasterxml.jackson.annotation.{ JsonIgnoreProperties, JsonIgnore }
 import com.codahale.jerkson.JsonSnakeCase
 
 case class CaseClass(id: Long, name: String)
@@ -39,26 +39,26 @@ case class CaseClassWithOption(value: Option[String])
 case class CaseClassWithJsonNode(value: JsonNode)
 
 case class CaseClassWithAllTypes(map: Map[String, String],
-                                 set: Set[Int],
-                                 string: String,
-                                 list: List[Int],
-                                 seq: Seq[Int],
-                                 indexedSeq: IndexedSeq[Int],
-                                 vector: Vector[Int],
-                                 bigDecimal: BigDecimal,
-                                 bigInt: BigInt,
-                                 int: Int,
-                                 long: Long,
-                                 char: Char,
-                                 bool: Boolean,
-                                 short: Short,
-                                 byte: Byte,
-                                 float: Float,
-                                 double: Double,
-                                 any: Any,
-                                 anyRef: AnyRef,
-                                 intMap: Map[Int, Int],
-                                 longMap: Map[Long, Long])
+  set: Set[Int],
+  string: String,
+  list: List[Int],
+  seq: Seq[Int],
+  indexedSeq: IndexedSeq[Int],
+  vector: Vector[Int],
+  bigDecimal: BigDecimal,
+  bigInt: BigInt,
+  int: Int,
+  long: Long,
+  char: Char,
+  bool: Boolean,
+  short: Short,
+  byte: Byte,
+  float: Float,
+  double: Double,
+  any: Any,
+  anyRef: AnyRef,
+  intMap: Map[Int, Int],
+  longMap: Map[Long, Long])
 
 case class CaseClassWithOptionalCollectionTypes(map: Option[Map[String, String]],
                                                 set: Option[Set[Int]],

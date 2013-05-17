@@ -1,8 +1,8 @@
 package com.codahale.jerkson.deser
 
 import com.fasterxml.jackson.databind.JavaType
-import com.fasterxml.jackson.databind.{DeserializationContext, JsonDeserializer}
-import com.fasterxml.jackson.core.{JsonToken, JsonParser}
+import com.fasterxml.jackson.databind.{ DeserializationContext, JsonDeserializer }
+import com.fasterxml.jackson.core.{ JsonToken, JsonParser }
 import scala.collection.mutable
 import com.fasterxml.jackson.databind.deser.ResolvableDeserializer
 
@@ -17,7 +17,7 @@ class MutableMapDeserializer(valueType: JavaType) extends JsonDeserializer[Objec
     }
 
     if (jp.getCurrentToken != JsonToken.FIELD_NAME &&
-        jp.getCurrentToken != JsonToken.END_OBJECT) {
+      jp.getCurrentToken != JsonToken.END_OBJECT) {
       throw ctxt.mappingException(valueType.getRawClass)
     }
 

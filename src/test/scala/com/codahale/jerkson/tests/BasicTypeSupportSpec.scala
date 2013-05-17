@@ -161,7 +161,7 @@ class BasicTypeSupportSpec extends FlatSpec with ShouldMatchers {
   }
 
   "An Array[Int]" should "generate a JSON array of ints" in {
-    generate(Array(1,2,3)) should equal("[1,2,3]")
+    generate(Array(1, 2, 3)) should equal("[1,2,3]")
   }
 
   it should "be parsable from a JSON array of ints" in {

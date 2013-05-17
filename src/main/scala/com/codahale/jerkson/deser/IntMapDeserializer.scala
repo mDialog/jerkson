@@ -1,7 +1,7 @@
 package com.codahale.jerkson.deser
 
-import com.fasterxml.jackson.databind.{DeserializationContext, JsonDeserializer}
-import com.fasterxml.jackson.core.{JsonToken, JsonParser}
+import com.fasterxml.jackson.databind.{ DeserializationContext, JsonDeserializer }
+import com.fasterxml.jackson.core.{ JsonToken, JsonParser }
 import com.fasterxml.jackson.databind.JavaType
 import scala.collection.immutable.IntMap
 import com.fasterxml.jackson.databind.deser.ResolvableDeserializer
@@ -17,7 +17,7 @@ class IntMapDeserializer(valueType: JavaType) extends JsonDeserializer[Object] w
     }
 
     if (jp.getCurrentToken != JsonToken.FIELD_NAME &&
-        jp.getCurrentToken != JsonToken.END_OBJECT) {
+      jp.getCurrentToken != JsonToken.END_OBJECT) {
       throw ctxt.mappingException(valueType.getRawClass)
     }
 
@@ -28,7 +28,7 @@ class IntMapDeserializer(valueType: JavaType) extends JsonDeserializer[Object] w
         map += ((name, valueDeserializer.deserialize(jp, ctxt)))
         jp.nextToken()
       } catch {
-        case e: IllegalArgumentException => throw ctxt.mappingException(classOf[IntMap[_]])
+        case e: IllegalArgumentException ⇒ throw ctxt.mappingException(classOf[IntMap[_]])
       }
     }
 
