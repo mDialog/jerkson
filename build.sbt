@@ -1,4 +1,4 @@
-name := "jerkson"
+name := "rickb777-jerkson"
 
 version := "0.8"
 

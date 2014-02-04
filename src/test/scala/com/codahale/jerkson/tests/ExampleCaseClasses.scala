@@ -7,6 +7,7 @@ import com.codahale.jerkson.JsonSnakeCase
 case class CaseClass(id: Long, name: String)
 
 case class CaseClassWithDefaultString(id: Long, name: String = "Coda")
+
 case class CaseClassWithDefaultInt(id: Long, answer: Int = 42)
 
 case class CaseClassWithLazyVal(id: Long) {
@@ -58,6 +59,15 @@ case class CaseClassWithAllTypes(map: Map[String, String],
   anyRef: AnyRef,
   intMap: Map[Int, Int],
   longMap: Map[Long, Long])
+
+case class CaseClassWithOptionalCollectionTypes(map: Option[Map[String, String]],
+                                                set: Option[Set[Int]],
+                                                list: Option[List[Int]],
+                                                seq: Option[Seq[Int]],
+                                                indexedSeq: Option[IndexedSeq[Int]],
+                                                vector: Option[Vector[Int]],
+                                                intMap: Option[Map[Int, Int]],
+                                                longMap: Option[Map[Long, Long]])
 
 object OuterObject {
   case class NestedCaseClass(id: Long)
